@@ -1,99 +1,118 @@
 "use client";
 
-import { use, useState } from "react";
-import Link from "next/link";
-import { ArrowLeft, Settings, Mic, FileText, Type, Radar, Target, Globe2, Loader2, CheckCircle2 } from "lucide-react";
-import { toast } from "sonner";
-
+import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, LayoutDashboard, Terminal, Loader2 } from "lucide-react";
 import WebTranslator from "../WebTranslator";
+import SurvivalPhrases from "../SurvivalPhrases";
+import CulturalHub from "../CulturalHub";
 
-export default function ToolPage({ params }: { params: Promise<{ tool: string }> }) {
+export default function ToolWorkspace({ params }: { params: Promise<{ tool: string }> }) {
+  const router = useRouter();
   const resolvedParams = use(params);
-  const toolName = resolvedParams.tool.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [toolName, setToolName] = useState("Loading...");
+  const [status, setStatus] = useState<"idle" | "connecting" | "connected">("idle");
 
-  const isTranslatorOrDictionary = toolName.includes("Translator") || toolName.includes("Dictionary");
+  useEffect(() => {
+    const name = resolvedParams.tool
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    setToolName(name);
+  }, [resolvedParams.tool]);
 
-  // Map icons based on string
-  const getIcon = () => {
-    if (toolName.includes("Translator") || toolName.includes("Voice")) return <Mic className="w-12 h-12 text-[#FF7043]" />;
-    if (toolName.includes("Dictionary") || toolName.includes("Document")) return <FileText className="w-12 h-12 text-[#2DD4BF]" />;
-    if (toolName.includes("Phrase") || toolName.includes("Text")) return <Type className="w-12 h-12 text-[#8B5CF6]" />;
-    if (toolName.includes("Ocr") || toolName.includes("Camera")) return <Radar className="w-12 h-12 text-[#EC4899]" />;
-    if (toolName.includes("Hub") || toolName.includes("Community")) return <Globe2 className="w-12 h-12 text-[#00BCD4]" />;
-    return <Target className="w-12 h-12 text-[#F57C00]" />;
-  };
-
-  const handleInitialize = () => {
-    setIsConnecting(true);
-    toast.info("Establishing secure P2P connection...", { duration: 2000 });
-    
+  const handleConnect = () => {
+    setStatus("connecting");
     setTimeout(() => {
-      setIsConnecting(false);
-      setIsConnected(true);
-      toast.success("Connection Established!", { 
-        description: isTranslatorOrDictionary ? "Web Translator Engine mounted." : "Flutter Engine sync is complete." 
-      });
-    }, 2500);
+      setStatus("connected");
+    }, 1500); 
   };
 
   return (
-    <main className="min-h-screen relative z-10 font-sans text-[#003731] flex flex-col pb-24">
-      <nav className="border-b border-white/40 bg-white/70 backdrop-blur-md px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-[#00574D] font-bold hover:text-[#FF7043] transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-          Back to Home
-        </Link>
-        <div className="font-bold text-lg text-[#003731]">
-          {toolName} Console
-        </div>
-        <button className="p-2 text-gray-500 hover:text-[#FF7043] rounded-full hover:bg-white/50 transition-colors">
-          <Settings className="w-5 h-5" />
-        </button>
-      </nav>
-
-      <div className="flex-grow flex flex-col items-center justify-center p-6 mt-12">
-        <div className="max-w-2xl w-full bg-white/90 rounded-3xl shadow-xl p-10 border border-white text-center relative overflow-hidden backdrop-blur-lg mb-8">
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF7043] via-[#00BCD4] to-[#2DD4BF]"></div>
-          
-          <div className="w-24 h-24 mx-auto bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-8 shadow-sm">
-            {isConnected ? <CheckCircle2 className="w-12 h-12 text-emerald-500" /> : getIcon()}
-          </div>
-          
-          <h1 className="text-4xl font-extrabold text-[#003731] mb-4">
-            {toolName} Workspace
-          </h1>
-          <p className="text-lg text-[#00574D] font-medium mb-10 max-w-lg mx-auto">
-            {isConnected 
-              ? (isTranslatorOrDictionary ? "Connection successful. Web Translator Engine is now active below." : "Connection successful. Waiting for Flutter WebAssembly payload to mount in the browser frame...")
-              : "This module has been initialized successfully. The user interface for this specific tool will be integrated here from the Flutter repository."}
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button 
-              onClick={handleInitialize}
-              disabled={isConnecting || isConnected}
-              className={`btn-tropical flex items-center gap-2 ${isConnected ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
-            >
-              {isConnecting ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Connecting...</>
-              ) : isConnected ? (
-                <><CheckCircle2 className="w-5 h-5" /> Connected</>
-              ) : (
-                "Initialize Connection"
-              )}
-            </button>
-            <Link href="/" className="btn-glass border-2 border-white bg-white/50 hover:bg-white text-[#FF7043]">
-              Close Tool
-            </Link>
+    <div className="min-h-screen bg-gradient-to-br from-[#E0F7FA] to-[#B2EBF2] font-sans">
+      {/* Top Navigation */}
+      <div className="bg-white/80 backdrop-blur-md border-b border-white shadow-sm p-4 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <button 
+            onClick={() => router.push('/')}
+            className="flex items-center gap-2 text-[#00574D] font-bold hover:text-[#FF7043] transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" /> Back to Home
+          </button>
+          <div className="flex items-center gap-2 font-bold text-[#00838F]">
+            <LayoutDashboard className="w-5 h-5" /> {toolName} Console
           </div>
         </div>
-        
-        {isConnected && isTranslatorOrDictionary && (
-           <WebTranslator />
-        )}
       </div>
-    </main>
+
+      <div className="max-w-7xl mx-auto p-6 md:p-12 mt-8">
+        <div className="island-card p-8 bg-white/95 backdrop-blur-xl shadow-2xl relative overflow-hidden rounded-[2rem]">
+          {/* Header */}
+          <div className="flex items-center gap-4 border-b border-gray-100 pb-6 mb-8 relative z-10">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#00BCD4] to-[#0097A7] rounded-xl flex items-center justify-center text-white shadow-md">
+              <Terminal className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-black text-[#003731]">{toolName} Workspace</h1>
+              <p className="font-medium text-[#00838F] mt-1">
+                {status === "idle" && "This offline module is ready to mount locally."}
+                {status === "connecting" && "Establishing offline local context..."}
+                {status === "connected" && "Module is successfully loaded and running directly in your browser."}
+              </p>
+            </div>
+          </div>
+
+          {/* Connection Controls */}
+          <div className="flex items-center justify-between bg-gray-50 p-6 rounded-2xl border border-gray-100 relative z-10">
+            <div className="flex items-center gap-3">
+              <div className={`w-3 h-3 rounded-full animate-pulse ${
+                status === "idle" ? "bg-gray-400" : 
+                status === "connecting" ? "bg-[#FF7043]" : "bg-green-500"
+              }`}></div>
+              <span className={`font-bold text-lg ${
+                status === "idle" ? "text-gray-500" : 
+                status === "connecting" ? "text-[#FF7043]" : "text-green-600"
+              }`}>
+                {status === "idle" ? "Offline Status: Standby" : 
+                 status === "connecting" ? "Booting Engine..." : "Engine Active"}
+              </span>
+            </div>
+
+            {status === "idle" && (
+              <button onClick={handleConnect} className="btn-tropical px-6 py-3">
+                Initialize Engine
+              </button>
+            )}
+
+            {status === "connecting" && (
+              <button disabled className="btn-glass px-6 py-3 bg-white border opacity-70">
+                <Loader2 className="w-5 h-5 animate-spin text-[#FF7043]" />
+              </button>
+            )}
+
+            {status === "connected" && (
+              <button onClick={() => setStatus("idle")} className="btn-glass px-6 py-3 bg-white border border-red-200 text-red-500 hover:bg-red-50">
+                Shutdown
+              </button>
+            )}
+          </div>
+
+          {/* Dynamic Component Mounting */}
+          {status === "connected" && (
+            <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-10">
+              {toolName === "Offline Web Translator" && <WebTranslator />}
+              {toolName === "Survival Phrases" && <SurvivalPhrases />}
+              {toolName === "Cultural Hub" && <CulturalHub />}
+              {!["Offline Web Translator", "Survival Phrases", "Cultural Hub"].includes(toolName) && (
+                <div className="p-12 text-center border-2 border-dashed border-gray-200 rounded-3xl mt-8">
+                  <h3 className="text-xl font-bold text-gray-500 mb-2">Module Not Found in Web Environment</h3>
+                  <p className="text-gray-400 font-medium max-w-md mx-auto">This feature requires native device capabilities (like offline ML Kit or NDK STT inference). Please download the Android APK to use this module.</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

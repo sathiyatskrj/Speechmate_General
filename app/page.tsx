@@ -190,12 +190,9 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {[
-              { name: "Omni-Lingual Translator", desc: "Speak in English/Hindi/Tamil to translate locally.", icon: Mic, color: "from-[#FF7043] to-[#F57C00]" },
-              { name: "Tribal Dictionaries", desc: "Access 13,000+ words in Nicobarese & Great Andamanese.", icon: FileText, color: "from-[#2DD4BF] to-[#00BCD4]" },
-              { name: "On-device STT", desc: "Hands-free translation using bundled Whisper AI.", icon: Target, color: "from-[#8B5CF6] to-[#6D28D9]" },
-              { name: "Camera OCR", desc: "Scan restaurant menus, signs, or local documents.", icon: Leaf, color: "from-[#EC4899] to-[#BE185D]" },
-              { name: "Survival Phrases", desc: "Quick-access greetings, directions, and food terms.", icon: Type, color: "from-[#F57C00] to-[#E65100]" },
-              { name: "Cultural Hub", desc: "Learn the heritage, traditions, and history offline.", icon: Globe2, color: "from-[#00BCD4] to-[#0097A7]" },
+              { name: "Offline Web Translator", desc: "Search 13,000+ words in Nicobarese & Great Andamanese locally.", icon: FileText, color: "from-[#2DD4BF] to-[#00BCD4]" },
+              { name: "Survival Phrases", desc: "Quick-access greetings, directions, and emergency terms.", icon: Type, color: "from-[#F57C00] to-[#E65100]" },
+              { name: "Cultural Hub", desc: "Learn the heritage, traditions, and history completely offline.", icon: Globe2, color: "from-[#00BCD4] to-[#0097A7]" },
             ].map((tool, i) => (
               <motion.div
                 key={i}
