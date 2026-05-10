@@ -1,6 +1,6 @@
 "use client";
 
-import { Mic, FileText, Type, Radar, Globe2, Target, Leaf, Radio, Download, ArrowRight, Sparkles, Smartphone, Github, Shield, MapPin, Zap } from "lucide-react";
+import { Mic, FileText, Type, Radar, Globe2, Target, Leaf, Radio, Download, ArrowRight, Sparkles, Smartphone, Code, Shield, MapPin, Zap } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="https://github.com/sathiyatskrj/Speechmate" target="_blank" className="btn-glass text-sm px-4 py-2 hidden sm:flex">
-              <Github className="w-4 h-4" /> Source
+              <Code className="w-4 h-4" /> Source
             </Link>
             <button onClick={() => toast.success("APK downloading...")} className="btn-tropical text-sm px-4 py-2">
               Get App
@@ -70,7 +70,7 @@ export default function Home() {
               Download Android APK
             </button>
             <Link href="https://github.com/sathiyatskrj/Speechmate" target="_blank" className="btn-glass w-full sm:w-auto px-8 py-4 text-lg bg-white border-2">
-              <Github className="w-5 h-5" />
+              <Code className="w-5 h-5" />
               View on GitHub
             </Link>
           </div>
