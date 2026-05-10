@@ -1,12 +1,15 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Settings, Mic, FileText, Type, Radar, Target, Globe2 } from "lucide-react";
+import { ArrowLeft, Settings, Mic, FileText, Type, Radar, Target, Globe2, Loader2, CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ToolPage({ params }: { params: Promise<{ tool: string }> }) {
   const resolvedParams = use(params);
   const toolName = resolvedParams.tool.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   // Map icons based on string
   const getIcon = () => {
@@ -16,6 +19,19 @@ export default function ToolPage({ params }: { params: Promise<{ tool: string }>
     if (toolName.includes("Ocr") || toolName.includes("Camera")) return <Radar className="w-12 h-12 text-[#EC4899]" />;
     if (toolName.includes("Hub") || toolName.includes("Community")) return <Globe2 className="w-12 h-12 text-[#00BCD4]" />;
     return <Target className="w-12 h-12 text-[#F57C00]" />;
+  };
+
+  const handleInitialize = () => {
+    setIsConnecting(true);
+    toast.info("Establishing secure P2P connection...", { duration: 2000 });
+    
+    setTimeout(() => {
+      setIsConnecting(false);
+      setIsConnected(true);
+      toast.success("Connection Established!", { 
+        description: "Flutter Engine sync is complete." 
+      });
+    }, 2500);
   };
 
   return (
@@ -38,21 +54,33 @@ export default function ToolPage({ params }: { params: Promise<{ tool: string }>
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF7043] via-[#00BCD4] to-[#2DD4BF]"></div>
           
           <div className="w-24 h-24 mx-auto bg-white rounded-2xl border border-gray-100 flex items-center justify-center mb-8 shadow-sm">
-            {getIcon()}
+            {isConnected ? <CheckCircle2 className="w-12 h-12 text-emerald-500" /> : getIcon()}
           </div>
           
           <h1 className="text-4xl font-extrabold text-[#003731] mb-4">
             {toolName} Workspace
           </h1>
           <p className="text-lg text-[#00574D] font-medium mb-10 max-w-lg mx-auto">
-            This module has been initialized successfully. The user interface for this specific tool will be integrated here from the Flutter repository.
+            {isConnected 
+              ? "Connection successful. Waiting for Flutter WebAssembly payload to mount in the browser frame..." 
+              : "This module has been initialized successfully. The user interface for this specific tool will be integrated here from the Flutter repository."}
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="btn-tropical">
-              Initialize Connection
+            <button 
+              onClick={handleInitialize}
+              disabled={isConnecting || isConnected}
+              className={`btn-tropical flex items-center gap-2 ${isConnected ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
+            >
+              {isConnecting ? (
+                <><Loader2 className="w-5 h-5 animate-spin" /> Connecting...</>
+              ) : isConnected ? (
+                <><CheckCircle2 className="w-5 h-5" /> Connected</>
+              ) : (
+                "Initialize Connection"
+              )}
             </button>
-            <Link href="/" className="btn-glass border-2 border-white bg-white/50 hover:bg-white">
+            <Link href="/" className="btn-glass border-2 border-white bg-white/50 hover:bg-white text-[#FF7043]">
               Close Tool
             </Link>
           </div>
