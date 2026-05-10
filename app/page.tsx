@@ -19,7 +19,9 @@ export default function Home() {
       description: "Redirecting to the portal...",
     });
     setTimeout(() => {
-      router.push(`/?tool=${toolName.toLowerCase().replace(/\s+/g, '-')}`);
+      // Use the newly created /tools/[tool] route
+      const slug = toolName.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/tools/${slug}`);
     }, 800);
   };
 
