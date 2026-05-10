@@ -22,21 +22,22 @@ export default function WebTranslator() {
     const fetchDictionary = async () => {
       try {
         const categories = [
-          "colors", "body_parts", "numbers", "feelings", "animals", 
+          "main", "colors", "body_parts", "numbers", "feelings", "animals", 
           "nature", "family", "phrases", "things", "great_andamanese", "dialects"
         ];
         let allData: DictEntry[] = [];
         
         for (const cat of categories) {
           try {
-            const res = await fetch(`/data/dictionary_${cat}.json`);
+            const fileName = cat === "main" ? "dictionary.json" : `dictionary_${cat}.json`;
+            const res = await fetch(`/data/${fileName}`);
             if (res.ok) {
               const data = await res.json();
               const mapped = data.map((item: any) => ({
                 englishText: item.text || item.english || "",
                 translatedText: item.nicobarese || item.great_andamanese || item.translation || "",
-                emoji: item.emoji || (item.great_andamanese ? '🏹' : '💬'),
-                category: cat,
+                emoji: item.emoji || (item.great_andamanese ? '🏹' : (cat === 'main' ? '🌴' : '💬')),
+                category: cat === 'main' ? 'Nicobarese Core' : cat,
                 language: item.great_andamanese ? 'Great Andamanese' : (item.nicobarese ? 'Nicobarese' : 'Regional Dialect')
               })).filter((item: DictEntry) => item.englishText && item.translatedText);
               
