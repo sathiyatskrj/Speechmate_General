@@ -6,11 +6,22 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleToolClick = (toolName: string) => {
+    toast.success(`Opening ${toolName}`, {
+      description: "Redirecting to the portal...",
+    });
+    setTimeout(() => {
+      const slug = toolName.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/tools/${slug}`);
+    }, 800);
+  };
 
   if (!mounted) return null;
 
@@ -111,13 +122,17 @@ export default function Home() {
             ].map((tool, i) => (
               <div
                 key={i}
-                className="island-card p-8 flex flex-col h-full bg-white/90"
+                onClick={() => handleToolClick(tool.name)}
+                className="island-card p-8 flex flex-col h-full bg-white/90 cursor-pointer group"
               >
-                <div className={`w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-6 shadow-sm ${tool.color}`}>
+                <div className={`w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform ${tool.color}`}>
                   <tool.icon className="w-7 h-7" />
                 </div>
                 <h3 className="font-bold text-xl mb-3 text-[#003731]">{tool.name}</h3>
                 <p className="font-medium text-[#00574D] flex-grow leading-relaxed">{tool.desc}</p>
+                <div className="mt-6 font-bold text-[#FF7043] flex items-center group-hover:text-[#E64A19] transition-colors">
+                  Launch App <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             ))}
           </div>
