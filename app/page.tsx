@@ -1,200 +1,191 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mic, FileText, Type, Radar, Globe2, Radio, Target, Leaf, Sparkles, Smartphone, Download, ArrowRight, Activity } from "lucide-react";
+import { Mic, FileText, Type, Radar, Globe2, Radio, Target, Leaf, Sparkles, Smartphone, Download, ArrowRight, Sun } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const router = useRouter();
 
   const handleToolClick = (toolName: string) => {
-    // Non-blocking toast notification replaces the synchronous alert() to fix INP
-    toast.loading(`Launching ${toolName}...`, {
-      description: "Please wait while we establish a secure connection.",
-      duration: 2000,
+    toast.success(`Opening ${toolName}`, {
+      description: "Redirecting to the portal...",
     });
+    // Actually route somewhere so the app feels alive
+    setTimeout(() => {
+      router.push(`/?tool=${toolName.toLowerCase().replace(/\s+/g, '-')}`);
+    }, 800);
   };
 
-  if (!mounted) return null;
-
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen relative z-10 font-inter text-[#003731]">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg)]/70 backdrop-blur-xl border-b border-[var(--border)]">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md border-b border-white/30 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-sora font-bold text-xl tracking-tight">
-            <div className="w-8 h-8 rounded-lg bg-[var(--primary)] text-[var(--primary-invert)] flex items-center justify-center text-sm">
-              <Activity className="w-4 h-4" />
-            </div>
+          <div className="flex items-center gap-2 font-sora font-bold text-xl tracking-tight text-[#FF7043]">
+            <Sun className="w-6 h-6" />
             SpeechMate
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--text-muted)]">
-            <Link href="#capabilities" className="hover:text-white transition-colors">Capabilities</Link>
-            <Link href="#community" className="hover:text-white transition-colors">Network</Link>
-            <Link href="#models" className="hover:text-white transition-colors">Offline Models</Link>
+          <div className="hidden md:flex items-center gap-8 font-semibold text-[#00574D]">
+            <Link href="#capabilities" className="hover:text-[#FF7043] transition-colors">Tools</Link>
+            <Link href="#community" className="hover:text-[#FF7043] transition-colors">Network</Link>
+            <Link href="#models" className="hover:text-[#FF7043] transition-colors">Downloads</Link>
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={() => handleToolClick('Console')} className="text-sm font-medium hover:text-white transition-colors">
-              Sign In
+            <button onClick={() => handleToolClick('Sign In')} className="btn-secondary text-sm px-4 py-2">
+              Log In
             </button>
             <button onClick={() => handleToolClick('Dashboard')} className="btn-primary text-sm px-4 py-2">
-              Dashboard <ArrowRight className="w-4 h-4" />
+              Dashboard
             </button>
           </div>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-6 pt-40 pb-24">
+      <div className="max-w-7xl mx-auto px-6 pt-36 pb-24 relative z-10">
         {/* Hero Section */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-32">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--border)] text-sm font-medium mb-8 text-[var(--text-muted)] shadow-sm">
-              <Sparkles className="w-4 h-4 text-[var(--primary)]" />
-              SpeechMate Engine v2.0 Live
-            </span>
-            <h1 className="text-5xl md:text-7xl font-sora font-extrabold tracking-tight leading-[1.1] mb-8">
-              Where Language <br className="hidden md:block" />
-              Barriers <span className="text-gradient-accent">End.</span>
-            </h1>
-            <p className="text-lg md:text-xl text-[var(--text-muted)] mb-10 max-w-2xl mx-auto leading-relaxed">
-              A professional suite for heritage language translation, learning, and cultural preservation. Built for the Andaman & Nicobar linguistic ecosystems.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button onClick={() => handleToolClick('Translator Console')} className="btn-primary w-full sm:w-auto px-8 py-3 text-base">
-                Start Translating
-              </button>
-              <button onClick={() => handleToolClick('Download App')} className="btn-secondary w-full sm:w-auto px-8 py-3 text-base">
-                <Smartphone className="w-4 h-4" />
-                Download App
-              </button>
-            </div>
-          </motion.div>
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-24 animate-fade-in-up">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-white/50 text-sm font-bold text-[#FF7043] shadow-sm mb-8">
+            <Sparkles className="w-4 h-4" />
+            SpeechMate Engine v2.0 Live
+          </span>
+          <h1 className="text-5xl md:text-7xl font-sora font-extrabold tracking-tight leading-tight mb-6 text-white drop-shadow-md">
+            Where Language <br className="hidden md:block" />
+            Barriers <span className="text-[#FFCC80]">End.</span>
+          </h1>
+          <p className="text-lg md:text-xl font-medium text-[#003731] mb-10 leading-relaxed bg-white/40 px-6 py-3 rounded-2xl backdrop-blur-sm border border-white/30">
+            A vibrant suite for heritage language translation, learning, and cultural preservation. Built for the beautiful Andaman & Nicobar islands.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <button onClick={() => handleToolClick('Translator Console')} className="btn-primary w-full sm:w-auto px-8 py-4 text-lg">
+              Start Translating
+            </button>
+            <button onClick={() => handleToolClick('Download App')} className="btn-secondary w-full sm:w-auto px-8 py-4 text-lg bg-white border-2">
+              <Smartphone className="w-5 h-5" />
+              Get Android App
+            </button>
+          </div>
         </div>
 
         {/* Translation Tools Grid */}
-        <div id="capabilities" className="mb-32">
-          <div className="flex items-center justify-between mb-10">
-            <div>
-              <h2 className="text-3xl font-sora font-bold text-white mb-2">Core Capabilities</h2>
-              <p className="text-[var(--text-muted)]">State-of-the-art ASR and NLP tools.</p>
-            </div>
+        <div id="capabilities" className="mb-24">
+          <div className="mb-8 text-center bg-white/60 py-4 rounded-2xl backdrop-blur-md border border-white/40 shadow-sm">
+            <h2 className="text-3xl font-sora font-bold text-[#00574D]">Translation Tools</h2>
+            <p className="font-medium mt-1">State-of-the-art native linguistics.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: "Voice Translator", desc: "Real-time speech-to-text with advanced noise & VAD filtering.", icon: Mic },
-              { name: "Document Hub", desc: "Upload PDFs and images for automated OCR translation.", icon: FileText },
-              { name: "Text Context", desc: "Chat-style interface with contextual grammar and syntax checks.", icon: Type },
-              { name: "Dialect Radar", desc: "Geospatial heatmap of regional dialect variations and evolution.", icon: Radar },
+              { name: "Voice Translator", desc: "Real-time speech-to-text with advanced noise filtering.", icon: Mic, color: "text-[#FF7043]" },
+              { name: "Document Hub", desc: "Upload PDFs for automated OCR and localized translation.", icon: FileText, color: "text-[#2DD4BF]" },
+              { name: "Text Context", desc: "Chat interface with contextual grammar and syntax checks.", icon: Type, color: "text-[#8B5CF6]" },
+              { name: "Dialect Radar", desc: "Geospatial heatmap of island dialect variations.", icon: Radar, color: "text-[#EC4899]" },
             ].map((tool, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i }}
                 onClick={() => handleToolClick(tool.name)}
-                className="glass-panel p-8 cursor-pointer flex flex-col h-full group"
+                className="island-card p-6 flex flex-col h-full cursor-pointer group bg-white/90"
               >
-                <div className="w-12 h-12 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center mb-6 group-hover:border-[var(--primary)] transition-colors">
-                  <tool.icon className="w-5 h-5 text-[var(--primary)]" />
+                <div className={`w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${tool.color}`}>
+                  <tool.icon className="w-7 h-7" />
                 </div>
-                <h3 className="font-sora font-semibold text-lg mb-3 text-white">{tool.name}</h3>
-                <p className="text-[var(--text-muted)] text-sm mb-6 flex-grow leading-relaxed">{tool.desc}</p>
-                <div className="flex items-center text-[var(--text-muted)] text-sm font-medium mt-auto group-hover:text-white transition-colors">
-                  Initialize <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                <h3 className="font-sora font-bold text-xl mb-3">{tool.name}</h3>
+                <p className="font-medium text-[#00574D] flex-grow leading-relaxed">{tool.desc}</p>
+                <div className="mt-6 font-bold text-[#FF7043] flex items-center group-hover:text-[#E64A19]">
+                  Launch App <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Explore & Learn Section */}
-        <div id="community" className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-32">
-          <div className="lg:col-span-2 glass-panel p-10 md:p-12 flex flex-col md:flex-row items-center gap-10 justify-between cursor-pointer group" onClick={() => handleToolClick('Community Hub')}>
+        {/* Culture & Practice Section */}
+        <div id="community" className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-24">
+          <div className="lg:col-span-2 island-card p-10 flex flex-col md:flex-row items-center gap-10 justify-between cursor-pointer group bg-gradient-to-br from-white/95 to-blue-50/90" onClick={() => handleToolClick('Community Hub')}>
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[var(--bg)] border border-[var(--border)] text-xs font-bold uppercase tracking-wider mb-6 text-[var(--text-muted)]">
-                <Globe2 className="w-3 h-3 text-[var(--accent)]" /> Global Network
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E0F7FA] text-[#00838F] text-xs font-bold uppercase tracking-wider mb-4 border border-[#B2EBF2]">
+                <Globe2 className="w-4 h-4" /> Global Network
               </div>
-              <h2 className="text-3xl font-sora font-bold mb-4 text-white">Community Hub</h2>
-              <p className="text-[var(--text-muted)] max-w-md leading-relaxed mb-8">
-                Engage with native speakers, linguists, and learners. Share audio snippets, ask for dialect corrections, and participate in heritage challenges securely.
+              <h2 className="text-4xl font-sora font-extrabold mb-4 text-[#006064]">Community Hub</h2>
+              <p className="font-medium text-[#00838F] max-w-md leading-relaxed mb-8 text-lg">
+                Engage with native speakers and learners. Share audio, ask for corrections, and participate in challenges.
               </p>
-              <div className="text-[var(--primary)] font-medium flex items-center text-sm">
-                Connect Network <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </div>
+              <button className="btn-primary">
+                Join the Network
+              </button>
             </div>
-            <div className="w-full md:w-56 h-56 rounded-full bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center relative overflow-hidden group-hover:border-[var(--primary)] transition-colors">
-               <div className="absolute inset-0 bg-[var(--primary)] opacity-5 blur-3xl rounded-full group-hover:opacity-10 transition-opacity"></div>
-               <Globe2 className="w-20 h-20 text-[var(--border)] group-hover:text-[var(--primary)] transition-colors relative z-10" />
-            </div>
+            <Globe2 className="w-32 h-32 text-[#4DD0E1] group-hover:scale-110 transition-transform duration-500 opacity-50 hidden md:block" />
           </div>
 
-          <div className="glass-panel p-10 md:p-12 flex flex-col justify-between cursor-pointer group" onClick={() => handleToolClick('Daily Practice')}>
+          <div className="island-card p-10 flex flex-col justify-between cursor-pointer group bg-gradient-to-br from-white/95 to-orange-50/90" onClick={() => handleToolClick('Daily Practice')}>
             <div>
-              <div className="w-12 h-12 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center mb-6 group-hover:border-[var(--accent)] transition-colors">
-                <Target className="w-5 h-5 text-[var(--accent)]" />
+              <div className="w-16 h-16 rounded-2xl bg-[#FFE0B2] flex items-center justify-center mb-6">
+                <Target className="w-8 h-8 text-[#F57C00]" />
               </div>
-              <h3 className="text-2xl font-sora font-bold mb-3 text-white">Daily Practice</h3>
-              <p className="text-[var(--text-muted)] text-sm leading-relaxed">
-                Maintain your cognitive streak with personalized 5-minute pronunciation validation sessions.
+              <h3 className="text-3xl font-sora font-extrabold mb-3 text-[#E65100]">Daily Practice</h3>
+              <p className="font-medium text-[#EF6C00] leading-relaxed">
+                Maintain your cognitive streak with quick 5-minute sessions.
               </p>
             </div>
-            <button className="btn-secondary w-full mt-8 group-hover:bg-[var(--surface-hover)] group-hover:text-white">
+            <button className="btn-secondary w-full mt-8 border-[#F57C00] text-[#F57C00]">
               Start Session
             </button>
           </div>
         </div>
 
-        {/* Culture Tools */}
+        {/* Integrations */}
         <div id="models">
-          <h2 className="text-3xl font-sora font-bold text-white mb-10">Ecosystem Integrations</h2>
+          <div className="mb-8 text-center bg-white/60 py-4 rounded-2xl backdrop-blur-md border border-white/40 shadow-sm">
+             <h2 className="text-3xl font-sora font-bold text-[#00574D]">Ecosystem</h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { name: "Story Radio", desc: "Stream high-fidelity folk tales in native audio formats.", icon: Radio },
-              { name: "Flora & Fauna", desc: "Indexed local ecosystem dictionary with image recognition.", icon: Leaf },
-              { name: "Offline Models", desc: "Download quantized ASR models for remote execution.", icon: Download },
+              { name: "Story Radio", desc: "Stream local folk tales in native audio formats.", icon: Radio, bg: "bg-[#FFF9C4]", text: "text-[#FBC02D]" },
+              { name: "Flora & Fauna", desc: "Indexed ecosystem dictionary with AI image recognition.", icon: Leaf, bg: "bg-[#DCEDC8]", text: "text-[#7CB342]" },
+              { name: "Offline Models", desc: "Download ASR models for remote execution.", icon: Download, bg: "bg-[#E1BEE7]", text: "text-[#8E24AA]" },
             ].map((tool, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + (0.1 * i) }}
                 onClick={() => handleToolClick(tool.name)}
-                className="glass-panel p-8 cursor-pointer flex items-start gap-5 hover:border-[var(--border-hover)] group"
+                className="island-card p-8 cursor-pointer flex items-start gap-5 bg-white/90 group"
               >
-                <div className="w-12 h-12 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center shrink-0 group-hover:bg-[var(--surface)] transition-colors">
-                  <tool.icon className="w-5 h-5 text-[var(--text-muted)] group-hover:text-white transition-colors" />
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${tool.bg} ${tool.text}`}>
+                  <tool.icon className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 </div>
                 <div>
-                  <h4 className="font-sora font-semibold text-white mb-2">{tool.name}</h4>
-                  <p className="text-[var(--text-muted)] text-sm leading-relaxed">{tool.desc}</p>
+                  <h4 className="font-sora font-bold text-xl mb-2">{tool.name}</h4>
+                  <p className="font-medium text-[#00574D] leading-relaxed">{tool.desc}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </div>
       
       {/* Footer */}
-      <footer className="border-t border-[var(--border)] bg-[var(--bg)] py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="font-sora font-bold tracking-tight flex items-center gap-2 text-white">
-            <div className="w-6 h-6 rounded bg-[var(--primary)] text-[var(--primary-invert)] flex items-center justify-center text-[10px]">
-              <Activity className="w-3 h-3" />
-            </div>
-            SpeechMate OS
+      <footer className="bg-white/80 backdrop-blur-md border-t border-white/50 py-10 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <div className="font-sora font-bold tracking-tight flex items-center gap-2 text-[#FF7043] text-xl">
+            <Sun className="w-6 h-6" />
+            SpeechMate Web
           </div>
-          <p className="text-[var(--text-muted)] text-sm">
-            © {new Date().getFullYear()} SpeechMate Platform. Andaman & Nicobar Ecosystem.
+          <p className="font-bold text-[#00574D]">
+            © {new Date().getFullYear()} Andaman & Nicobar Heritage Ecosystem.
           </p>
         </div>
       </footer>
+
+      {/* Simple native animation classes */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}} />
     </main>
   );
 }
