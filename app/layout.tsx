@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased selection:bg-[#FF7043]/30 selection:text-[#003731]">
         <Toaster theme="light" position="top-center" />
         <div className="wave-container">
           <div className="wave wave-1"></div>
