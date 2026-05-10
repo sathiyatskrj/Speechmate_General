@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageCircle, Info } from "lucide-react";
+import { MessageCircle, Info, Volume2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface PhraseEntry {
   english?: string;
@@ -71,23 +72,40 @@ export default function SurvivalPhrases() {
           <div className="p-8 text-center text-gray-400">Loading phrases...</div>
         ) : (
           phrases.map((phrase, idx) => (
-            <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:border-[#FF7043] transition-colors group">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#FF7043] mb-3">{phrase.category}</div>
-              
-              <div className="text-2xl font-bold text-[#003731] mb-2">{phrase.english}</div>
-              
-              {phrase.nicobarese && (
-                <div className="text-xl text-[#00838F] font-medium">{phrase.nicobarese}</div>
-              )}
-              {phrase.great_andamanese && (
-                <div className="text-xl text-[#00838F] font-medium">{phrase.great_andamanese}</div>
-              )}
-              {phrase.meaning && (
-                <div className="mt-3 flex items-start gap-2 text-sm text-gray-500 bg-white p-3 rounded-xl border border-gray-100">
-                  <Info className="w-4 h-4 mt-0.5 text-[#F57C00] shrink-0" />
-                  <span className="font-medium">{phrase.meaning}</span>
-                </div>
-              )}
+            <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:border-[#FF7043] transition-colors group flex items-start justify-between">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-[#FF7043] mb-3">{phrase.category}</div>
+                
+                <div className="text-2xl font-bold text-[#003731] mb-2">{phrase.english}</div>
+                
+                {phrase.nicobarese && (
+                  <div className="text-xl text-[#00838F] font-medium">{phrase.nicobarese}</div>
+                )}
+                {phrase.great_andamanese && (
+                  <div className="text-xl text-[#00838F] font-medium">{phrase.great_andamanese}</div>
+                )}
+                {phrase.meaning && (
+                  <div className="mt-3 flex items-start gap-2 text-sm text-gray-500 bg-white p-3 rounded-xl border border-gray-100">
+                    <Info className="w-4 h-4 mt-0.5 text-[#F57C00] shrink-0" />
+                    <span className="font-medium">{phrase.meaning}</span>
+                  </div>
+                )}
+              </div>
+              <button 
+                onClick={() => {
+                  if ('speechSynthesis' in window && phrase.english) {
+                    const utter = new SpeechSynthesisUtterance(phrase.english);
+                    utter.rate = 0.8;
+                    window.speechSynthesis.speak(utter);
+                    toast.success("Speaking phrase...");
+                  } else {
+                    toast.error("Speech synthesis not available.");
+                  }
+                }}
+                className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#F57C00] hover:border-[#F57C00] transition-colors shadow-sm shrink-0"
+              >
+                <Volume2 className="w-5 h-5" />
+              </button>
             </div>
           ))
         )}
