@@ -4,6 +4,7 @@ import { Mic, FileText, Type, Radar, Globe2, Target, Leaf, Radio, Download, Arro
 import Link from "next/link";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
