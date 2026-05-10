@@ -37,7 +37,7 @@ export default function Home() {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.4, ease: "easeOut" } }
+    show: { y: 0, opacity: 1, transition: { duration: 0.4 } }
   };
 
   return (
