@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -50,9 +51,7 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-3 font-extrabold text-2xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FF7043] to-[#F57C00]"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF7043] to-[#F57C00] flex items-center justify-center text-white shadow-lg">
-              <MapPin className="w-6 h-6" />
-            </div>
+            <Image src="/logo_main.png" alt="SpeechMate Logo" width={40} height={40} className="w-10 h-10 rounded-xl shadow-lg" />
             SpeechMate
           </motion.div>
           <div className="hidden md:flex items-center gap-10 font-bold text-[#00574D]">
@@ -68,9 +67,9 @@ export default function Home() {
             <Link href="https://github.com/sathiyatskrj/Speechmate" target="_blank" className="text-[#00574D] hover:text-[#FF7043] font-bold text-sm hidden sm:flex items-center gap-2 transition-colors">
               <Code className="w-5 h-5" /> Source
             </Link>
-            <button onClick={() => toast.success("APK downloading...")} className="btn-tropical text-sm px-6 py-3 shadow-lg hover:shadow-xl">
+            <Link href="https://github.com/sathiyatskrj/Speechmate/releases/latest" target="_blank" onClick={() => toast.success("Redirecting to download...")} className="btn-tropical text-sm px-6 py-3 shadow-lg hover:shadow-xl inline-flex items-center justify-center gap-2">
               Get App
-            </button>
+            </Link>
           </motion.div>
         </div>
       </nav>
@@ -98,11 +97,11 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <button onClick={() => toast.success("Starting APK download...")} className="btn-tropical w-full sm:w-auto px-8 py-4 text-lg shadow-xl shadow-[#FF7043]/20 hover:-translate-y-1 transition-all">
+              <Link href="https://github.com/sathiyatskrj/Speechmate/releases/latest" target="_blank" onClick={() => toast.success("Redirecting to download...")} className="btn-tropical w-full sm:w-auto px-8 py-4 text-lg shadow-xl shadow-[#FF7043]/20 hover:-translate-y-1 transition-all inline-flex items-center justify-center gap-2">
                 <Smartphone className="w-5 h-5" />
                 Download APK
-              </button>
-              <Link href="https://github.com/sathiyatskrj/Speechmate" target="_blank" className="btn-glass w-full sm:w-auto px-8 py-4 text-lg bg-white border-2 hover:-translate-y-1 transition-all">
+              </Link>
+              <Link href="https://github.com/sathiyatskrj/Speechmate" target="_blank" className="btn-glass w-full sm:w-auto px-8 py-4 text-lg bg-white border-2 hover:-translate-y-1 transition-all inline-flex items-center justify-center gap-2">
                 <Code className="w-5 h-5" />
                 View on GitHub
               </Link>
@@ -266,7 +265,7 @@ export default function Home() {
       <footer className="bg-white/80 backdrop-blur-md border-t border-white py-12 relative z-10">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="font-black tracking-tight flex items-center gap-3 text-[#FF7043] text-2xl">
-            <MapPin className="w-8 h-8" />
+            <Image src="/logo_main.png" alt="SpeechMate Logo" width={32} height={32} className="w-8 h-8 rounded-lg" />
             SpeechMate
           </div>
           <p className="font-bold text-[#00574D]">
