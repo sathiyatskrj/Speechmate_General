@@ -122,7 +122,7 @@ export default function CulturalHub() {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
+    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
 
   return (
